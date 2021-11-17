@@ -4,5 +4,13 @@
         3 -> [1, 5, 8, 3]: True
         -1 -> (1, 5, 8, 3): False
 '''
-print('3 -> [1, 5, 8, 3]:', 3 in [1, 5, 8, 3])
-print('-1 -> (1, 5, 8, 3)', -1 in (1, 5, 8, 3))
+n = int(input('example: 3'))
+data = input('example: [1, 5, 8, 3]')[1:-1]
+
+if ', ' in data:
+        data = data.split(', ')
+else:
+        data = [data]
+
+data = list(map(int, data))
+print(f'{n} -> {data}: {n in data}')
