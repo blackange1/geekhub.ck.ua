@@ -8,9 +8,9 @@
 """
 def comparison_of_numbersmy(x, y) -> str:
     x, y = map(float, (x, y))
-    if x < y:
-        return f'х бiльше нiж у на {abs(x - y)}'
     if x > y:
+        return f'х бiльше нiж у на {abs(x - y)}'
+    if x < y:
         return f'y бiльше нiж x на {abs(x - y)}'
     return f'вiдповiдь - х дорiвнює {x}'
 
