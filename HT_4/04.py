@@ -3,13 +3,11 @@
 def prime_list(start, end) -> list:
     res = []
 
-
     def is_prime(number):
         for i in range(2, number // 2 + 1):
             if number % i == 0:
                 return False
         return True
-
 
     for n in range(start, end + 1):
         if is_prime(n):
