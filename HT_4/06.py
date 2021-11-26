@@ -2,7 +2,7 @@
 
 def get_super_number(number):
     if number > 0:
-        return number ** 0.5
+        return number ** 2
     if number < 0:
         return number * 100
     return number
