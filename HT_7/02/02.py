@@ -14,6 +14,8 @@ class TypeChar(Exception):
 
 
 def print_file_content(name_file, n, char='#')->None:
+   res = None
+
    if not isinstance(char, str):
       raise TypeChar()
    
@@ -23,10 +25,19 @@ def print_file_content(name_file, n, char='#')->None:
    with open(pathlib.Path(__file__).parent.joinpath(name_file), 'r') as file:
       line = file.read()
       len_string = len(line)
-     
-      if len_string < n * 3:
+
+      if len_string < n:
          raise LimitCharsString()
-      
+
+      if len_string < n * 3:
+         res = []
+         start_idex_center_position = len_string // 2 - n // 2
+
+         res.append(line[:n])
+         res.append(line[start_idex_center_position: start_idex_center_position + n])
+         res.append(line[-n:])
+         res = ','.join(res)
+
       else:
          count_space = len_string - n * 3
 
@@ -41,7 +52,7 @@ def print_file_content(name_file, n, char='#')->None:
          res += '*' * count_space_right
          res += line[-n:]
 
-         print(res)
+      print(res)
 
 
 path_test = pathlib.Path(__file__).parent.joinpath('test')
@@ -50,9 +61,14 @@ tests = [
    ('test_1.txt', 3),
    ('test_1.txt', 4),
    ('test_1.txt', 5),
+
    ('test_2.txt', 3),
    ('test_2.txt', 4),
    ('test_2.txt', 8),
+   
+   ('test_3.txt', 4),
+   ('test_3.txt', 5),
+   ('test_3.txt', 6),
 ]
 
 for path, n in tests:
