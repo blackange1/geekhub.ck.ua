@@ -140,7 +140,7 @@ class User():
 
         for k1000 in range(min(n // 1000, n1000), -1, -1):
             for k500 in range(min(n // 500, n500), -1, -1):
-                for k200 in range(min(n // 20, n200), -1, -1):
+                for k200 in range(min(n // 200, n200), -1, -1):
                     for k100 in range(min(n // 100, n100), -1, -1):
                         for k50 in range(min(n // 50, n50), -1, -1):
                             for k20 in range(min(n // 20, n20), -1, -1):
