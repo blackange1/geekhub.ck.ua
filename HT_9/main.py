@@ -1,39 +1,17 @@
-import csv
-
-from pathlib import Path
 from time import sleep
-from user import User, print_message, print_warning, execute_sql
+from user import User
+from my_sql import execute_sql, create_db
+from print import print_message, print_warning 
 
-import sqlite3 as sq
-
-
-
-
-MAIN_PATH = Path(__file__).parent.joinpath('db')
-
-USERS_DB = MAIN_PATH.joinpath('users.db')
 
 ADMIN = 'Панель адміністратора системи GOLD LAMP'
 HELLO = 'Вітаємо вас в GOOLD LAMP'
 CREATE_USER = 'Створення нового користувача GOLD LAMP | для виходу введіть EXIT'
 LOGIN = 'Авторизація в системі GOLD LAMP'
 NOMINAL = (1000, 500, 200, 100, 50, 20, 10)
+EXIT = '____ для виходу натисніть ENTER\n'
 
-
-# create db
-with sq.connect(USERS_DB) as con:
-    cur = con.cursor() #Cursor
-
-    # cur.execute("DROP TABLE IF EXISTS users") # delete
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-            user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            password TEXT NOT NULL,
-            is_admin INTEGER NOT NULL DEFAULT 0,
-            balance REAL
-        )
-    """)
+create_db(restart=False)
 
 
 def login():
@@ -70,14 +48,15 @@ def user_interface(name, pw):
         print('1. Баланс')
         print('2. Поповнити рахунок')
         print('3. Зняти готівку')
-        print('4. Вихід')
+        print('4. Показати всі транзакції')
+        print('5. Вихід')
         get_op = input()
         # 1
         if get_op == '1':
 
             print_message(USER_INTERFACE)
             print(f'____ Ваш баланс {user.get_balance()}')
-            input('____ для виходу натисніть ENTER\n')
+            input(EXIT)
 
         # 2
         elif get_op == '2':
@@ -92,7 +71,7 @@ def user_interface(name, pw):
 
                     print_message(USER_INTERFACE)
                     print(f'____ Ви поповнили рахунок на {money}')
-                    input('____ для виходу натисніть ENTER\n')
+                    input(EXIT)
 
                     have_problem = False
                     break
@@ -151,6 +130,13 @@ def user_interface(name, pw):
                 print_warning('___ Ви використали три спроби  :(', 1)
         # 4
         elif get_op == '4':
+            transactions = user.get_transactions()
+            print_message(USER_INTERFACE)
+            for op, m in transactions:
+                print(f'{op} ---> {m}')
+            input(EXIT)            
+        # 5
+        elif get_op == '5':
             break
         else:
             print_warning('Невідома команда :(', 2)
@@ -238,6 +224,14 @@ def create_user():
                 print_message(CREATE_USER)
                 print_warning('Ім\'я не посинно містити такі символи /\:*?"<>|', 2)
                 continue
+        
+        sql = "SELECT * FROM users WHERE name=='{}'".format(name)
+        res = execute_sql(sql).fetchone()
+        if res != None:
+            print_message(CREATE_USER)
+            print_warning("Це ім'я вже зайняте :(", 2)
+            continue
+
         break            
     
     while True:
