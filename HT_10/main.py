@@ -1,7 +1,7 @@
 from time import sleep
-from user import User
-from my_sql import execute_sql, create_db
-from print import print_message, print_warning 
+from lib.user import User
+from lib.my_sql import execute_sql, create_db
+from lib.print import print_message, print_warning 
 
 import requests
 from datetime import datetime, date, timedelta
@@ -230,7 +230,7 @@ def user_interface(name, pw):
                     old_res = res
                     delta = timedelta(days=1)
 
-                    for _ in range(date_now.toordinal() - date_user.toordinal() - 1):
+                    for _ in range(date_now.toordinal() - date_user.toordinal()):
                     
                         date_user = date_user + delta
 
@@ -328,47 +328,28 @@ def user_interface(name, pw):
                     print_warning('Ви невірно ввели  назву валюту', 2)
 
             if flag:
-                date_user = None
                 date_now = datetime.now() 
+                
+                year, month, day = date_now.year, date_now.month, date_now.day
+                r = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={day}.{month}.{year}').json()
+                res = None
+                new_res = None
+                for d in r['exchangeRate']:
+                    if d.get('currency') == currency:
+                        res = d['saleRateNB']
+                    elif d.get('currency') == new_currency:
+                        new_res = d['saleRateNB']
+                    # elif not (None in (res, new_res)):
+                    #     break
+                
+                if currency == new_currency:
+                    new_res = res
 
-                while True:
-                    try:
-                        print_message(USER_INTERFACE)
-                        user_input = input('Введіть дату конвертації | Зразок: 2014 12 1\n')
-
-                        year, month, day = list(map(int, user_input.split()))
-                        date_user = date(year, month, day)
-                        break
-                    except Exception as r:
-                        print_warning('Зверніть увагу на зразок: 2014 12 1', 2)
-
-
-                if date_user.toordinal() > date_now.toordinal():
-                    print_warning('Нажаль ми не знаємо майбутнього :(', 2)
-
-                elif date_user.toordinal() < date(2014, 12, 1).toordinal():
-                    print_warning('На той час не існувало таких технологій :(. Почніть з 2014 12 1', 2)
-                else:
-                    year, month, day = date_user.year, date_user.month, date_user.day
-                    r = requests.get(f'https://api.privatbank.ua/p24api/exchange_rates?json&date={day}.{month}.{year}').json()
-                    res = None
-                    new_res = None
-                    for d in r['exchangeRate']:
-                        if d.get('currency') == currency:
-                            res = d['saleRateNB']
-                        elif d.get('currency') == new_currency:
-                            new_res = d['saleRateNB']
-                        # elif not (None in (res, new_res)):
-                        #     break
-                    
-                    if currency == new_currency:
-                        new_res = res
-
-                    try:
-                        print(f"{money} {currency} == {round(money * new_res / res, 4)} {new_currency}")
-                    except Exception as e:
-                        print(e)
-                    input(EXIT)
+                try:
+                    print(f"{money} {currency} == {round(money * new_res / res, 4)} {new_currency}")
+                except Exception as e:
+                    print(e)
+                input(EXIT)
         # 8
         elif get_op == '8':
             break
@@ -510,6 +491,7 @@ def start():
         print_message(HELLO)
         print('0 Увійти в систему')
         print("1 Створити нового користувача")
+        print("2 Вихід")
 
         user_input = input()
         if user_input == '0':
@@ -522,6 +504,9 @@ def start():
                
         elif user_input == '1':
             create_user()
+
+        elif user_input == '2':
+            break
                     
 
 start()

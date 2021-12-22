@@ -2,7 +2,7 @@ import pathlib
 import sqlite3 as sq
 
 
-USERS_DB = pathlib.Path(__file__).parent.joinpath('db').joinpath('users.db')
+USERS_DB = pathlib.Path(__file__).parent.parent.joinpath('db').joinpath('users.db')
 NOMINAL = (1000, 500, 200, 100, 50, 20, 10)
 
 
