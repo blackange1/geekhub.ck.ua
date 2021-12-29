@@ -30,8 +30,9 @@ def parsing():
         """)
 
     i = 1
-    while True:
-        html_doc = requests.get(f'{link}/page/{i}/')
+    next_link = link
+    while next_link:
+        html_doc = requests.get(next_link)
         
         print(f"\npage № {i}")
         i += 1
@@ -39,10 +40,6 @@ def parsing():
         soup = BeautifulSoup(html_doc.text, 'html.parser')
 
         quote = soup.find_all('div', class_='quote')
-        if not quote:
-            print('не існує (:')
-            input('натисніть ENTER для виходу в меню')
-            break
         for index in range(len(quote)):
             data = {}
 
@@ -83,6 +80,15 @@ def parsing():
             info = f"{data['author']}: {data['text']}"
             print(info)
             print('#' * len(info))
+    
+        try:
+            next_link = soup.find('li', class_="next").find('a').get('href')
+            next_link = link + next_link
+        except AttributeError:
+            next_link = None
+
+    print('парсинг закінчено')
+    input('натисніть ENTER для виходу в меню')
 
 
 def show_db():
