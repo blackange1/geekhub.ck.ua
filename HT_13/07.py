@@ -9,5 +9,5 @@ class Thing(object):
 
 example = Thing()
 
+print(type(Thing))
 print(type(example))
-print(*example.__dir__(), sep='\n')

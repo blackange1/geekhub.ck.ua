@@ -52,15 +52,15 @@ class Student(Peaple):
                 print(book.title, book.year, book.authors)
 
 
-inform = Book("Інформатика", 2016, count=20)
+inform = Book("Інформатика", 2016, 20)
 inform.add_count(5)
 inform.print_count()
 inform.delete_count(55)
 inform.delete_count(5)
 inform.print_count()
 
-fizika = Book("Фізика", 2019, count=1, authors=["Автор 1", "Автор 2"])
-mathematika = Book("Геометрія", 2019, count=1, authors=["Автор 3"])
+fizika = Book("Фізика", 2019, 1, ["Автор 1", "Автор 2"])
+mathematika = Book("Геометрія", 2019, 1, ["Автор 3"])
 
 student_1 = Student("Jack", 2000)
 student_1.add_book(fizika)

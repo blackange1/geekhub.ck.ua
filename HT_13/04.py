@@ -18,7 +18,7 @@ class Figure(object):
         self._color = color
 
 
-class Oval(Figure):
+class Square(Figure):
     def __init__(self, width=1, height=1, color='white') -> None:
         super().__init__(color=color)
         self.width = width

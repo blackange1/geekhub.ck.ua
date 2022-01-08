@@ -10,6 +10,7 @@ class Calc(object):
     """
     def __init__(self) -> None:
         # saved last operation
+        self.duble_last_result = None
         self.last_result = None
 
     def add(self, a, b):
@@ -24,8 +25,9 @@ class Calc(object):
         ----------
         a + b : float or int
         """
-        self.last_result = 'add'
-        return a + b
+        self.duble_last_result = self.last_result
+        self.last_result = a + b
+        return self.last_result
 
     def sub(self, a, b):
         """
@@ -39,8 +41,9 @@ class Calc(object):
         ----------
         a - b : float or int
         """
-        self.last_result = 'sub'
-        return a - b
+        self.duble_last_result = self.last_result
+        self.last_result = a - b
+        return self.last_result
 
     def mult(self, a, b):
         """
@@ -54,8 +57,9 @@ class Calc(object):
         ----------
         a * b : float or int
         """
-        self.last_result = 'mult'
-        return a * b
+        self.duble_last_result = self.last_result
+        self.last_result = a * b
+        return self.last_result
 
     def div(self, a, b) -> float:
         """
@@ -69,11 +73,12 @@ class Calc(object):
         ----------
         a / b : float or None if b == 0
         """
-        self.last_result = 'div'
         if b == 0:
             print('Zero Division')
             return None
-        return a / b
+        self.duble_last_result = self.last_result
+        self.last_result = a / b
+        return self.last_result
 
 
 # test
@@ -83,3 +88,4 @@ print(tmp.sub(5, 2))
 print(tmp.mult(5, 2))
 print(tmp.div(5, 2))
 print(tmp.last_result)
+print(tmp.duble_last_result)
