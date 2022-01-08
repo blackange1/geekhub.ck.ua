@@ -19,7 +19,7 @@ class Figure(object):
 
 
 class Square(Figure):
-    def __init__(self, width=1, height=1, color='white') -> None:
+    def __init__(self, width, height, color='white') -> None:
         super().__init__(color=color)
         self.width = width
         self.height = height
@@ -32,10 +32,10 @@ class Square(Figure):
 
 
 class Oval(Figure):
-    def __init__(self, r=1, R=1, color='white') -> None:
+    def __init__(self, r1, r2, color='white') -> None:
         super().__init__(color=color)
-        self.r = r
-        self.R = R
+        self.r1 = r1
+        self.r2 = r2
 
     def get_square(self) -> float:
-        return self.R * self.r * pi
+        return self.r1 * self.r2 * pi
