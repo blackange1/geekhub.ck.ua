@@ -19,7 +19,7 @@ class Calc(object):
         ----------
         a : float or int
             first number
-        b : str
+        b : float or int
             second number
         Return
         ----------
@@ -35,7 +35,7 @@ class Calc(object):
         ----------
         a : float or int
             first number
-        b : str
+        b : float or int
             second number
         Return
         ----------
@@ -51,7 +51,7 @@ class Calc(object):
         ----------
         a : float or int
             first number
-        b : str
+        b : float or int
             second number
         Return
         ----------
@@ -67,7 +67,7 @@ class Calc(object):
         ----------
         a : float or int
             first number
-        b : str
+        b : float or int
             second number
         Return
         ----------
