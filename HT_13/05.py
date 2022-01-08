@@ -1,7 +1,7 @@
 # 5. Створіть за допомогою класів та продемонструйте свою реалізацію шкільної бібліотеки(включіть фантазію).
 
 class Book(object):
-    def __init__(self, title, year, count=1, authors = []) -> None:
+    def __init__(self, title: str, year: int, count: int, authors: list) -> None:
         self.title = title
         self.year = year
         self._count = count
@@ -52,7 +52,7 @@ class Student(Peaple):
                 print(book.title, book.year, book.authors)
 
 
-inform = Book("Інформатика", 2016, 20)
+inform = Book("Інформатика", 2016, 20, [])
 inform.add_count(5)
 inform.print_count()
 inform.delete_count(55)
