@@ -1,9 +1,5 @@
-import pathlib
 import sqlite3 as sq
-
-
-USERS_DB = pathlib.Path(__file__).parent.parent.joinpath('db').joinpath('users.db')
-NOMINAL = (1000, 500, 200, 100, 50, 20, 10)
+from lib._config import NOMINAL, USERS_DB
 
 
 def execute_sql(sql):
@@ -14,7 +10,7 @@ def execute_sql(sql):
             return cur
     except Exception as error:
         print(f'error: {error}')
-    
+
 
 def create_db(restart=False): 
     with sq.connect(USERS_DB) as con:
@@ -55,3 +51,13 @@ def create_db(restart=False):
         if len(cur.execute("SELECT nominal, count FROM money").fetchall()) == 0:
             for n in NOMINAL:
                 cur.execute("INSERT INTO money (nominal, count) VALUES('{}', 0)".format(n))
+
+
+def get_info_money_db():
+    sql = "SELECT nominal, count FROM money"
+    return dict(execute_sql(sql).fetchall())
+
+
+modul = 'database'
+if __name__ == '__main__':
+    print(f'You run lib {modul}')
