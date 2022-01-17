@@ -2,6 +2,5 @@
 #
 # Please refer to the documentation for information on how to create and manage
 # your spiders.
-# from news_crawl import NewsCrawlSpider
-# NewsCrawlSpider.tmp = input('link\n')
+
 

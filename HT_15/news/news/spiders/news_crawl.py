@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, date
 
 
-def valid_date(url) -> tuple:
+def valid_date() -> tuple:
     while True:
         try:
             s = input('Введіть дату через пробіл | Приклад: 2022 01 07\n')
@@ -13,16 +13,20 @@ def valid_date(url) -> tuple:
             now = datetime.now().date()
 
             if d <= now:
-                return [url + '/'.join(map(str, (year, mont, day))) + '/']
+                return year, mont, day
             print('Ви ввели дату яка ще не настала')
         except Exception as error:
             print(error, 'Приклад: 2022 01 07')
 
-# scrapy crawl news_crawl
+
 class NewsCrawlSpider(scrapy.Spider):
     name = 'news_crawl'
     url = 'https://www.vikka.ua/'
-    start_urls = valid_date(url)
+
+    year, mont, day = valid_date()
+    start_urls = [url + '/'.join(map(str, (year, mont, day))) + '/']
+    name_file = f'{year}_{mont}_{day}.csv'
+
     print(start_urls)
 
     if start_urls:
@@ -36,11 +40,14 @@ class NewsCrawlSpider(scrapy.Spider):
 
             html = response.css('div.entry-content').get()
             soup = BeautifulSoup(html, 'html.parser')
-            content = soup.text.strip().replace('\n', '')
+            content = soup.text.strip().replace('\n', ' ')
 
             yield {
                 'name': response.css('h1.post-title::text').get(),
                 'content': content,
                 'tags': ', '.join(tags),
+                'link': response.css('div.heateor_sss_sharing_container::attr(heateor-sss-data-href)').get(),
             }
 
+# run spider
+# scrapy crawl news_crawl
