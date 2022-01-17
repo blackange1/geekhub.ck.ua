@@ -1,0 +1,22 @@
+scrapy shell
+>>> fetch('https://book24.ru/product/transhumanism-inc-6015821/')
+2022-01-16 16:24:21 [scrapy.core.engine] INFO: Spider opened
+2022-01-16 16:24:21 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://book24.ru/robots.txt> (referer: None)
+2022-01-16 16:24:21 [scrapy.core.engine] DEBUG: Crawled (200) <GET https://book24.ru/product/transhumanism-inc-6015821/> (referer: None)
+
+>>> response.css('h1.product-detail-page__title')
+[<Selector xpath="descendant-or-self::h1[@class and contains(concat(' ', normalize-space(@class), ' '), ' product-detail-page__title ')]" data='<h1 itemprop="name" class="product-de...'>]
+>>> response.css('h1.product-detail-page__title::text')
+[<Selector xpath="descendant-or-self::h1[@class and contains(concat(' ', normalize-space(@class), ' '), ' product-detail-page__title ')]/text()" data=' Пелевин Виктор Олегович: Transhumani...'>]
+>>> response.css('h1.product-detail-page__title::text').get()
+' Пелевин Виктор Олегович: Transhumanism Inc. (Трансгуманизм Inc.) '
+>>> response.css('h1.product-detail-page__title::text').get().strip()
+'Пелевин Виктор Олегович: Transhumanism Inc. (Трансгуманизм Inc.)'
+
+>>> response.css('p.product-detail-page__purchased-text::text').get()
+' Купили 1189 раз '
+>>> response.css('p.product-detail-page__purchased-text::text').get().split()[1]
+'1189'
+
+>>> response.css('div.product-characteristic__value a::attr(title)')[2].get()
+'Современная русская проза'
