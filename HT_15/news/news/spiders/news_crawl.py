@@ -5,34 +5,42 @@ from datetime import datetime, date
 
 
 def valid_date() -> tuple:
+    example = '2022 01 07 or 2022 01 or 2022'
+
+    def is_future(year: int, mont=1, day=1) -> bool:
+        now = datetime.now().date()
+        if date(year, mont, day) <= now:
+            return False
+        return True
+
     while True:
         try:
-            s = input('Введіть дату через пробіл | Приклад: 2022 01 07\n')
-            year, mont, day = map(int, s.split())
-            d = date(year, mont, day)
-            now = datetime.now().date()
-
-            if d <= now:
-                return year, mont, day
+            s = input(f'Введіть дату через пробіл | Приклад: {example}\n')
+            d = tuple(map(int, s.split()))
+            if not is_future(*d):
+                print(200)
+                return tuple(map(str, d))
             print('Ви ввели дату яка ще не настала')
         except Exception as error:
-            print(error, 'Приклад: 2022 01 07')
+            print(error, f'Приклад: {example}')
 
 
 class NewsCrawlSpider(scrapy.Spider):
     name = 'news_crawl'
     url = 'https://www.vikka.ua/'
 
-    year, mont, day = valid_date()
-    start_urls = [url + '/'.join(map(str, (year, mont, day))) + '/']
-    name_file = f'{year}_{mont}_{day}.csv'
-
-    print(start_urls)
+    _date = valid_date()
+    start_urls = [url + '/'.join(map(str, _date)) + '/']
+    name_file = f"{'_'.join(_date)}.csv"
 
     if start_urls:
         def parse(self, response, **kwargs):
             for link in response.css('a.more-link-style::attr(href)'):
                 yield response.follow(link, callback=self.parse_new)
+
+            next_link = response.css('a.next::attr(href)').get()
+            if next_link:
+                yield response.follow(next_link, callback=self.parse)
 
         @staticmethod
         def parse_new(response):
