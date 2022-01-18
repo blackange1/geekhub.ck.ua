@@ -25,7 +25,7 @@ class NewsPipeline:
         with open(Path(__file__).parent.parent.joinpath('res').joinpath(spider.name_file), 'a', newline='', encoding='utf-8') as f:
             name, content, tags, link = item['name'].replace(';', ''), item['content'].replace(';', ''), item['tags'], item['link']
 
-            writer = csv.writer(f, )
+            writer = csv.writer(f)
             writer.writerow([name, content, tags, link])
 
         return item
