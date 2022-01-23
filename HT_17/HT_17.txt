@@ -1,0 +1,12 @@
+Завдання: за допомогою браузера (Selenium) відкрити форму за наступним посиланням:
+
+https://docs.google.com/forms/d/e/1FAIpQLScLhHgD5pMnwxl8JyRfXXsJekF8_pDG36XtSEwaGsFdU2egyw/viewform?usp=sf_link
+
+заповнити і відправити її.
+Зберегти два скріншоти: заповненої форми і повідомлення про відправлення форми.
+В репозиторії скріншоти зберегти.
+
+
+Корисні посилання:
+https://www.selenium.dev/documentation/
+https://chromedriver.chromium.org/downloads
