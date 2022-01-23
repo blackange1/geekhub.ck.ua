@@ -23,7 +23,6 @@ class NewsPipeline:
         self.cur.execute("""
             CREATE TABLE IF NOT EXISTS news(
                 id_new INTEGER PRIMARY KEY,
-                author TEXT,
                 title TEXT NOT NULL,
                 content TEXT NOT NULL,
                 tags TEXT,
@@ -32,14 +31,14 @@ class NewsPipeline:
             );
         """)
 
-    def insert_table(self, author, title, content, tags, link, data):
+    def insert_table(self, title, content, tags, link, data):
         if (link,) in self.conn.execute('SELECT link FROM news').fetchall():
             return None
 
-        row = [author, title, content, tags, link, data]
+        row = [title, content, tags, link, data]
         query = """
-            INSERT INTO news (author, title, content, tags, link, data)
-            VALUES(?, ?, ?, ?, ?, ?)
+            INSERT INTO news (title, content, tags, link, data)
+            VALUES(?, ?, ?, ?, ?)
         """
         self.conn.execute(query, row)
         self.conn.commit()
@@ -48,13 +47,12 @@ class NewsPipeline:
         self.conn.close()
 
     def process_item(self, item, spider):
-        author = item['author']
         title = item['title']
         content = item['content']
         tags = item['tags']
         link = item['link']
         date = item['date']
 
-        self.insert_table(author, title, content, tags, link, date)
+        self.insert_table(title, content, tags, link, date)
 
         return item
