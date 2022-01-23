@@ -1,0 +1,3 @@
+{"operation": "add_money", "money": 20.0}
+{"operation": "withdraw_money", "money": 10.0}
+{"operation": "add_money", "money": 404.0}
