@@ -11,8 +11,8 @@ def main(type_stories='newstories'):
     )
     if type_stories in check:
         print(f'Ви обрали {type_stories}'.upper())
-        # stories = Stories(type_stories)
-        # stories.run_parsing()
+        stories = Stories(type_stories)
+        stories.run_parsing()
     else:
         print('помилка введення команди')
 
