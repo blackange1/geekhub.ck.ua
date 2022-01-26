@@ -13,10 +13,51 @@ class ErrorType(Exception):
 class Stories(object):
 
     __head_file = {
-        "askstories": ['by', 'descendants', 'id', 'kids', 'score', 'text', 'time', 'title', 'type'],
-        "showstories": ['by', 'descendants', 'id', 'kids', 'score', 'text', 'time', 'title', 'type', 'url'],
-        "newstories": ['by', 'descendants', 'id', 'kids', 'score', 'text', 'time', 'title', 'type', 'url'],
-        "jobstories": ['by', 'id', 'score', 'text', 'time', 'title', 'type', 'url']
+        "askstories": [
+            'by',
+            'descendants',
+            'id',
+            'kids',
+            'score',
+            'text',
+            'time',
+            'title',
+            'type'
+        ],
+        "showstories": [
+            'by',
+            'descendants',
+            'id',
+            'kids',
+            'score',
+            'text',
+            'time',
+            'title',
+            'type',
+            'url'
+        ],
+        "newstories": [
+            'by',
+            'descendants',
+            'id',
+            'kids',
+            'score',
+            'text',
+            'time',
+            'title',
+            'type',
+            'url'
+        ],
+        "jobstories": [
+            'by',
+            'id',
+            'score',
+            'text',
+            'time',
+            'title',
+            'type',
+            'url'
+        ]
     }
 
     __link = "https://hacker-news.firebaseio.com/v0/"
@@ -31,7 +72,10 @@ class Stories(object):
             raise ErrorType()
 
     def create_csv_file(self):
-        with open(path_csvfile.joinpath(self.name_csv_file), 'w', newline='', encoding='utf-8') as file:
+        with open(path_csvfile.joinpath(self.name_csv_file),
+                  'w',
+                  newline='',
+                  encoding='utf-8') as file:
             writer = DictWriter(file, fieldnames=self.__head_csv_file)
             writer.writeheader()
 
@@ -40,7 +84,10 @@ class Stories(object):
         req = requests.get(link)
         print(link, 'status_code', req.status_code)
         req = req.json()
-        with open(path_csvfile.joinpath(self.name_csv_file), 'a', newline='', encoding='utf-8') as file:
+        with open(path_csvfile.joinpath(self.name_csv_file),
+                  'a',
+                  newline='',
+                  encoding='utf-8') as file:
             writer = DictWriter(file, fieldnames=self.__head_csv_file)
             writer.writerow(req)
 

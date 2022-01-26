@@ -1,27 +1,30 @@
+import argparse
 from libs.stories import Stories
 
 
-def main():
-    menu = (
+def main(type_stories='newstories'):
+    check = (
         'askstories',
         'showstories',
         'newstories',
         'jobstories'
     )
-    for i in range(len(menu)):
-        print(f'{i} - парсити {menu[i]}')
-
-    try:
-        n = input('Введіть номер команди\n')
-        n = 2 if n == '' else n
-        type_stories = menu[int(n)]
+    if type_stories in check:
         print(f'Ви обрали {type_stories}'.upper())
-        stories = Stories(type_stories)
-        stories.run_parsing()
-    except:
+        # stories = Stories(type_stories)
+        # stories.run_parsing()
+    else:
         print('помилка введення команди')
 
 
 if __name__ == '__main__':
-    main()
-
+    try:
+        parser = argparse.ArgumentParser()
+        parser.add_argument("type",
+                            type=str,
+                            help="type of stories",
+                            default="newstories")
+        args = parser.parse_args()
+        main(args.type)
+    except:
+        main()
