@@ -5,12 +5,7 @@ from .models import Parser
 
 
 def index(request):
-    stories = [
-        'askstories',
-        'jobstories',
-        'newstories',
-        'showstories',
-    ]
+    stories = Parser.stories
     req_form = request.GET.get('stories')
     run_parser = False
     if req_form in stories:

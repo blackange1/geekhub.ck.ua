@@ -24,7 +24,7 @@
     <form action="">
         <select class="custom-select" id="stories" name="stories">
             {% for history in stories %}
-                <option value="{{ history }}">{{ history }}</option>
+                <option value="{{ history }}">{{ history.title }}</option>
             {% endfor %}
         </select>
         <br>

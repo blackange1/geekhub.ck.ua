@@ -1,8 +1,6 @@
 import requests
-import sqlite3
 
 from django.db import models
-from pathlib import Path
 
 
 class Askstories(models.Model):
@@ -108,42 +106,37 @@ class ErrorType(Exception):
 
 
 class Parser(object):
-    __head_file = [
-        'askstories',
-        'showstories',
-        'newstories',
-        'jobstories',
-    ]
+
+    stories = {
+        'askstories': Askstories,
+        'showstories': Showstories,
+        'newstories': Newstories,
+        'jobstories': Jobstories,
+    }
 
     __link = "https://hacker-news.firebaseio.com/v0/"
 
     def __init__(self, type_stories="newstories"):
-        if type_stories in Parser.__head_file:
+        if type_stories in Parser.stories.keys():
             self.type_stories = type_stories
-            self.__id = self.get_id()
+            self.__id = tuple(
+                Parser.stories.get(type_stories).objects.all().values_list(
+                    f'id_{type_stories}',
+                    flat=True
+                )
+            )
         else:
             raise ErrorType()
 
-    def get_id(self):
-        conn = sqlite3.connect(
-            Path(__file__).parent.parent.joinpath('db.sqlite3')
-        )
-        cur = conn.cursor()
-        cur.execute(
-            f"SELECT id_{self.type_stories} FROM parser_{self.type_stories}"
-        )
-        return cur.fetchall()
-
-    def write_db(self, sub_link: str):
-        link = f"{self.__link}item/{sub_link}.json"
-        req = requests.get(link)
-        print(link, 'status_code', req.status_code)
-
-        if req.status_code == 200:
-            req = req.json()
-            if (req.get('id', -1), ) in self.__id:
-                print('Такий запис уже існує в database')
-            else:
+    def write_db(self, sub_link: str) -> None:
+        if sub_link in self.__id:
+            print('Такий запис уже існує в database')
+        else:
+            link = f"{self.__link}item/{sub_link}.json"
+            req = requests.get(link)
+            print(link, 'status_code', req.status_code)
+            if req.status_code == 200:
+                req = req.json()
                 if self.type_stories == 'newstories':
                     history = Newstories(
                         by=req.get('by', ''),
