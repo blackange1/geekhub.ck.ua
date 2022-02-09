@@ -1,0 +1,46 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .category {
+            margin: 20px;
+        }
+    </style>
+    <div class="category">
+        {% for cat in category %}
+            <a class="btn btn-primary" href="{% url 'category' cat.id %}" role="button">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for g in guitars %}
+            <div class="col">
+                <div class="card">
+                    <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
+                         class="card-img-top" alt="guitar">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'product' g.pk %}">{{ g.title }}</a>
+                        </h5>
+                        <p class="card-text">{{ g.price }} грн.</p>
+                        <p class="d-flex justify-content-between">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser %}
+                                    <a class="btn btn-success" href="{% url 'add_product_to_basket' g.id %}">Купить</a>
+                                    <a class="btn btn-warning" href="{% url 'edit_product' g.id %}">Редактировать</a>
+                                    <a class="btn btn-danger" href="{% url 'delete_product' g.id %}">Удалить</a>
+                                {% else %}
+                                    <a class="btn btn-success" href="{% url 'add_product_to_basket' g.id %}">Купить</a>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+
+{% endblock %}
+
+

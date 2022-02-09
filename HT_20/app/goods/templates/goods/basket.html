@@ -1,0 +1,34 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .basket_wrap {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+    </style>
+
+    <div class="basket_wrap row row-cols-1 row-cols-md-1 g-4">
+        {% if guitars|length == 0 %}
+            <p class="text-center">Корзина пуста <a href="{% url 'index' %}">вибрати товар</a></p>
+        {% endif %}
+        {% for g in guitars %}
+            <div class="col">
+                <div class="card">
+                    <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
+                         class="card-img-top" alt="guitar">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'product' g.pk %}">{{ g.title }}</a>
+                        </h5>
+                        <p class="card-text">{{ g.price }} грн.</p>
+                        <p class="d-flex justify-content-between">
+                            <a class="btn btn-danger" href="{% url 'delete_product_with_basket' g.id_basket %}">Удалить
+                                с корзины</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

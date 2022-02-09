@@ -1,0 +1,50 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .product_wraper {
+            margin: 20px;
+        }
+
+        .product_img,
+        .product_description {
+            padding: 10px;
+            width: 50%;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+    <div class="product_wraper">
+        <h2 class="text-center">{{ guitar.title }}</h2>
+        <div class="d-flex justify-content-between">
+            <div class="product_img">
+                <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
+                     alt="">
+            </div>
+            <div class="product_description">
+                <p class="fw-bold"><a href="{% url 'category' guitar.products_id %}">{{ guitar.products }}</a></p>
+                <p><span class="fw-bold">Цена:</span> {{ guitar.price }}</p>
+                {% if guitar.count > 0 %}
+                    <p>есть в наличии</p>
+                {% else %}
+                    <p>нет на складе</p>
+                {% endif %}
+            </div>
+        </div>
+        <p class="fw-bold text-center">Описание</p>
+        <p>{{ guitar.description }}</p>
+        <p class="d-flex justify-content-between">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a class="btn btn-success" href="{% url 'add_product_to_basket' guitar.id %}">Купить</a>
+                    <a class="btn btn-warning" href="{% url 'edit_product' guitar.id %}">Редактировать</a>
+                    <a class="btn btn-danger" href="{% url 'delete_product' guitar.id %}">Удалить</a>
+                {% else %}
+                    <a class="btn btn-success" href="{% url 'add_product_to_basket' guitar.id %}">Купить</a>
+                {% endif %}
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}

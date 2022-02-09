@@ -1,0 +1,84 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .product_wraper {
+            margin: 20px;
+        }
+
+        .product_img,
+        .product_description {
+            padding: 10px;
+            width: 50%;
+        }
+
+        img,
+        input[type="text"] {
+            width: 100%;
+        }
+    </style>
+    <form class="product_wraper" method="post" action="{% url 'edit_product' guitar.id %}">
+        {% if message %}
+            <div class="alert alert-{{ class_alert }}" role="alert">
+                {{ message }}
+            </div>
+        {% endif %}
+
+
+        {% csrf_token %}
+        <h2 class="text-center">
+            <input type="text"
+                   class="form-control"
+                   name="title"
+                   value="{{ guitar.title }}">
+        </h2>
+
+        <div class=" d-flex justify-content-between">
+            <div class="product_img">
+                <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
+                     alt="">
+            </div>
+            <div class="product_description">
+                <p>Категорія:</p>
+                <p>
+                    <select
+                            class="form-select"
+                            name="category">
+                        {% for cat in category %}
+                            {% if guitar.products == cat %}
+                                <option value="{{ cat.id }}" selected>{{ cat }}</option>
+                            {% else %}
+                                <option value="{{ cat.id }}">{{ cat }}</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </p>
+
+                <p>Цена:</p>
+                <p>
+                    <input type="text"
+                           class="form-control"
+                           value="{{ guitar.price }}"
+                           name="price">
+                </p>
+                <p>Количество:</p>
+                <p>
+                    <input type="text"
+                           class="form-control"
+                           value="{{ guitar.count }}"
+                           name="count">
+                </p>
+            </div>
+        </div>
+        <div class="form-floating">
+            <textarea class="form-control"
+                      id="description"
+                      name="description"
+                      style="height: 300px">{{ guitar.description }}</textarea>
+            <label for="description">Описание</label>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+        <a class="btn btn-danger" href="{% url 'delete_product' guitar.id %}">Удалить</a>
+    </form>
+{% endblock %}
