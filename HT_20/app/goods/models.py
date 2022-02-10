@@ -19,6 +19,10 @@ class Base(models.Model):
 class Guitar(Base):
     description = \
         models.TextField(default='description')
+    path_img = \
+        models.FileField(upload_to='uploads/%m/',
+                         default='',
+                         )
     # material_body = \
     #     models.CharField(max_length=50)
     # material_fretboard = \

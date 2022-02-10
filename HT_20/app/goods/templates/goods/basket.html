@@ -6,6 +6,10 @@
             max-width: 600px;
             margin: 20px auto;
         }
+        .product_img {
+            width: 25%;
+            margin: 0 auto;
+        }
     </style>
 
     <div class="basket_wrap row row-cols-1 row-cols-md-1 g-4">
@@ -15,8 +19,8 @@
         {% for g in guitars %}
             <div class="col">
                 <div class="card">
-                    <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
-                         class="card-img-top" alt="guitar">
+                    <img src="{{ g.path_img.url }}"
+                         class="card-img-top product_img" alt="guitar">
                     <div class="card-body">
                         <h5 class="card-title">
                             <a href="{% url 'product' g.pk %}">{{ g.title }}</a>

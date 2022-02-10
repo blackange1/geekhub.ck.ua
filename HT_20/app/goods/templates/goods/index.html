@@ -5,6 +5,10 @@
         .category {
             margin: 20px;
         }
+        .product_img{
+            width: 35%;
+            margin: 0 auto;
+        }
     </style>
     <div class="category">
         {% for cat in category %}
@@ -16,8 +20,10 @@
         {% for g in guitars %}
             <div class="col">
                 <div class="card">
-                    <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
-                         class="card-img-top" alt="guitar">
+                    <img class="product_img"
+                         src="{{ g.path_img.url }}"
+                         class="card-img-top"
+                         alt="guitar">
                     <div class="card-body">
                         <h5 class="card-title">
                             <a href="{% url 'product' g.pk %}">{{ g.title }}</a>

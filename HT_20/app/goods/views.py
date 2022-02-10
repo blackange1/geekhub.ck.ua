@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.shortcuts import render, redirect
+from .models import CategoryOfGuitar, Guitar, Basket
 from django.shortcuts import render, redirect
 
 from .models import CategoryOfGuitar, Guitar, Basket
@@ -13,6 +16,11 @@ def index(request):
 
 
 def profile(request):
+    return redirect('index')
+
+
+def logout(request):
+    request.session.clear()
     return redirect('index')
 
 
