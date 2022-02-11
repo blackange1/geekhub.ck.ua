@@ -12,6 +12,11 @@
             width: 50%;
         }
 
+        .product_img {
+            width: 15%;
+            margin: 0 auto;
+        }
+
         img {
             width: 100%;
         }
@@ -20,7 +25,7 @@
         <h2 class="text-center">{{ guitar.title }}</h2>
         <div class="d-flex justify-content-between">
             <div class="product_img">
-                <img src="https://shop.brianmayguitars.co.uk/user/arielle/BMG%20Arielle%202021%20-%20Content%2009.jpg"
+                <img src="{{ guitar.path_img.url }}"
                      alt="">
             </div>
             <div class="product_description">
