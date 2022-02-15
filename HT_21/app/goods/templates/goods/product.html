@@ -1,0 +1,62 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .product_wraper {
+            margin: 20px;
+        }
+
+        .product_img,
+        .product_description {
+            padding: 10px;
+            width: 50%;
+        }
+
+        .product_img {
+            width: 15%;
+            margin: 0 auto;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+    <div class="product_wraper">
+        <h2 class="text-center">{{ guitar.title }}</h2>
+        <div class="d-flex justify-content-between">
+            <div class="product_img">
+                {% if guitar.path_img %}
+                    <img src="{{ guitar.path_img.url }}"
+                         class="card-img-top"
+                         alt="guitar">
+                {% else %}
+                    <img src="https://anitekh.ru/wp-content/uploads/2019/10/no-image.jpg"
+                         class="card-img-top"
+                         alt="not img">
+                {% endif %}
+            </div>
+            <div class="product_description">
+                <p class="fw-bold"><a href="{% url 'category' guitar.products_id %}">{{ guitar.products }}</a></p>
+                <p><span class="fw-bold">Цена:</span> {{ guitar.price }}</p>
+                {% if guitar.count > 0 %}
+                    <p>есть в наличии</p>
+                {% else %}
+                    <p>нет на складе</p>
+                {% endif %}
+            </div>
+        </div>
+        <p class="fw-bold text-center">Описание</p>
+        <p>{{ guitar.description }}</p>
+        <p class="d-flex justify-content-between">
+            {% if user.is_authenticated %}
+                {% if user.is_superuser %}
+                    <a class="btn btn-success" href="{% url 'add_product_to_basket' guitar.id %}">Купить</a>
+                    <a class="btn btn-warning" href="{% url 'edit_product' guitar.id %}">Редактировать</a>
+                    <a class="btn btn-danger" href="{% url 'delete_product' guitar.id %}">Удалить</a>
+                {% else %}
+                    <a class="btn btn-success" href="{% url 'add_product_to_basket' guitar.id %}">Купить</a>
+                {% endif %}
+            {% endif %}
+        </p>
+    </div>
+{% endblock %}

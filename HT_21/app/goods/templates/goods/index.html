@@ -1,0 +1,89 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .category {
+            margin: 20px;
+        }
+
+        .product_img {
+            width: 35%;
+            margin: 0 auto;
+        }
+    </style>
+    <div class="category">
+        {% for cat in category %}
+            <a class="btn btn-primary" href="{% url 'category' cat.id %}" role="button">{{ cat.name }}</a>
+        {% endfor %}
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for guitar in guitars %}
+            <div class="col">
+                <div class="card">
+                    {% if guitar.path_img %}
+                        <img src="{{ guitar.path_img.url }}"
+                             class="card-img-top product_img"
+                             alt="guitar">
+                    {% else %}
+                        <img src="https://anitekh.ru/wp-content/uploads/2019/10/no-image.jpg"
+                             class="card-img-top product_img"
+                             alt="not img">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{% url 'product' guitar.pk %}">{{ guitar.title }}</a>
+                        </h5>
+                        <p class="card-text">{{ guitar.price }} грн.</p>
+                        <p class="d-flex justify-content-between">
+                            {% if user.is_authenticated %}
+                                {% if user.is_superuser %}
+                                    {#                                     <a class="btn btn-success" href="{% url 'add_product_to_basket' g.id %}">Купить</a>#}
+                                    <button class="btn btn-success" onclick="addProduct({{ guitar.pk }})">Купить
+                                    </button>
+                                    <a class="btn btn-warning"
+                                       href="{% url 'edit_product' guitar.pk %}">Редактировать</a>
+                                    <a class="btn btn-danger" href="{% url 'delete_product' guitar.pk %}">Удалить</a>
+                                {% else %}
+                                    {#                                    <a class="btn btn-success" href="{% url 'add_product_to_basket' g.id %}">Купить</a>#}
+                                    <button class="btn btn-success" onclick="addProduct({{ guitar.pk }})">Купить
+                                    </button>
+                                {% endif %}
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        const nameBasket = 'basket' + {{ user.id }};
+
+        let addProduct = (n) => {
+            n = n.toString();
+            if (sessionStorage.getItem(nameBasket) == null || sessionStorage.getItem(nameBasket) == '') {
+                sessionStorage.setItem(nameBasket, n);
+            } else {
+                let productsId = sessionStorage.getItem(nameBasket).split(',');
+                if (productsId.includes(n)) {
+                    alert('цей товар уже в корзині');
+                    return 1
+                } else {
+                    productsId.push(n)
+                    sessionStorage.setItem(nameBasket, productsId);
+
+                }
+
+            }
+            alert('додано в корзину');
+            return 0;
+        };
+
+
+    </script>
+
+{% endblock %}
+
+
+

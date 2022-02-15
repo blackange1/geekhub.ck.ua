@@ -1,0 +1,108 @@
+{% extends "goods/base.html" %}
+
+{% block content %}
+    <style>
+        .basket_wrap {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+
+        .product_img {
+            width: 25%;
+            margin: 0 auto;
+        }
+    </style>
+    <div class="basket_wrap row row-cols-1 row-cols-md-1 g-4" id="products">
+        {#        {% if guitars|length == 0 %}#}
+        {#            <p class="text-center">Корзина пуста <a href="{% url 'index' %}">вибрати товар</a></p>#}
+        {#        {% endif %}#}
+        {#        {% for g in guitars %}#}
+        {#            <div class="col">#}
+        {#                <div class="card">#}
+        {#                    {% if g.path_img %}#}
+        {#                        <img src="{{ g.path_img.url }}"#}
+        {#                             class="card-img-top product_img"#}
+        {#                             alt="guitar">#}
+        {#                    {% else %}#}
+        {#                        <img src="https://anitekh.ru/wp-content/uploads/2019/10/no-image.jpg"#}
+        {#                             class="card-img-top product_img"#}
+        {#                             alt="not img">#}
+        {#                    {% endif %}#}
+        {#                    <div class="card-body">#}
+        {#                        <h5 class="card-title">#}
+        {#                            <a href="{% url 'product' g.pk %}">{{ g.title }}</a>#}
+        {#                        </h5>#}
+        {#                        <p class="card-text">{{ g.price }} грн.</p>#}
+        {#                        <p class="d-flex justify-content-between">#}
+        {#                            <a class="btn btn-danger" href="{% url 'delete_product_with_basket' g.id_basket %}">Удалить#}
+        {#                                с корзины</a>#}
+        {#                        </p>#}
+        {#                    </div>#}
+        {#                </div>#}
+        {#            </div>#}
+        {#        {% endfor %}#}
+    </div>
+    <script>
+        const nameBasket = 'basket' + {{ user.id }};
+        let products = document.getElementById('products')
+        productsId = sessionStorage.getItem(nameBasket).split(',')
+        if (productsId == ''){
+            products.innerHTML += `
+                <p class="text-center">Корзина пуста <a href="{% url 'index' %}">вибрати товар</a></p>
+            `
+        }
+        for (let pId of productsId) {
+            console.log(pId)
+            let url = `http://127.0.0.1:8000/api/v1/goodslist/${pId}/`;
+            // Making our request
+            fetch(url, {method: 'GET'})
+                .then(Result => Result.json())
+                .then(s => {
+
+                    // Printing our response
+                    console.log(s);
+
+                    // Printing our field of our response
+                    console.log(`Title of our response :  ${s.guitar.title}`);
+                    let g = s.guitar
+                    products.innerHTML += `
+                        <div class="col" id="product${pId}">
+                            <div class="card">
+                                <img src="${g.path_img}"
+                                     class="card-img-top product_img"
+                                     alt="guitar">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="#">${g.title}</a>
+                                    </h5>
+                                    <p class="card-text">${g.price} грн.</p>
+                                    <p class="d-flex justify-content-between">
+                                        <button class="btn btn-danger" onclick="delProduct(${pId})">Удалить
+                                            с корзины</button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    `
+                })
+                .catch(errorMsg => {
+                    console.log(errorMsg);
+                });
+        }
+        delProduct = (n) => {
+            n = n.toString();
+
+            let productsIdIndex = productsId.indexOf(n);
+            if (productsIdIndex !== -1) {
+                productsId.splice(productsIdIndex, 1);
+                sessionStorage.setItem(nameBasket, productsId);
+
+                let productDiv = document.getElementById(`product${n}`);
+                productDiv.remove();
+            }
+
+        }
+
+    </script>
+{% endblock %}

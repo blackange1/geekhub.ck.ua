@@ -1,0 +1,53 @@
+#############
+# goodslist #
+#############
+
+GET
+http://127.0.0.1:8000/api/v1/goodslist/
+
+
+POST
+http://127.0.0.1:8000/api/v1/goodslist/
+body => raw => JSON
+{
+    "title": "title",
+    "price": 2000,
+    "count": 1,
+    "description": "description",
+    "products_id": 1
+}
+without key path_img
+
+
+PUT
+http://127.0.0.1:8000/api/v1/goodslist/1/
+body => raw => JSON
+{
+    "title": "title",
+    "price": 2000,
+    "count": 1,
+    "description": "description",
+    "products_id": 1
+}
+without key path_img
+
+
+DELETE
+http://127.0.0.1:8000/api/v1/goodslist/1/
+
+############
+# category #
+############
+
+GET
+http://127.0.0.1:8000/api/v1/category/
+
+POST
+http://127.0.0.1:8000/api/v1/category/
+body => raw => JSON
+{
+    "name": "name category"
+}
+
+DELETE
+http://127.0.0.1:8000/api/v1/category/1/
