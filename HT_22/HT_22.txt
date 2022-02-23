@@ -1,0 +1,6 @@
+Модифікувати ДЗ №19 таким чином, щоб скрейпінг відбувався в Селері черзі.
+
+Корисні посилання:
+https://docs.celeryproject.org/en/stable/
+https://docs.celeryproject.org/en/stable/django/first-steps-with-django.html
+https://www.rabbitmq.com/
